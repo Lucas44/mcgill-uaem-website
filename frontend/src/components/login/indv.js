@@ -1,4 +1,31 @@
+import React, {useState} from 'react'
+import Userfront from "@userfront/react"
+
 export const IndividualLogin = ({handleReg}) => {
+
+  Userfront.init("8nwrppdb");
+
+  function useInput({ type /*...*/ }) {
+    const [value, setValue] = useState("");
+    const input = <input value={value} onChange={e => setValue(e.target.value)} type={type} />;
+    return [value, input];
+  }
+
+  const [username, userInput] = useInput({ type: "text" });
+  const [password, passwordInput] = useInput({ type: "text" });
+
+  function handleSubmit() {
+
+    // Call Userfront.signup()
+    Userfront.signup({
+      method: "password",
+      email: username,
+      password: password,
+      data: {
+        accountName: username,
+      },
+    });
+  }
   return (
       <div>
     <form className="bg-white">
@@ -17,13 +44,8 @@ export const IndividualLogin = ({handleReg}) => {
                 d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
               />
             </svg>
-            <input
-              className="pl-2 outline-none border-none"
-              type="text"
-              name=""
-              id=""
-              placeholder="Email Address"
-            />
+            
+            {userInput}
           </div>
           <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
             <svg
@@ -38,21 +60,17 @@ export const IndividualLogin = ({handleReg}) => {
                 clip-rule="evenodd"
               />
             </svg>
-            <input
-              className="pl-2 outline-none border-none"
-              type="text"
-              name=""
-              id=""
-              placeholder="Password"
-            />
+            
+            {passwordInput}
           </div>
           <button
             type="submit"
             className="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"
+            onClick={() => handleSubmit}
           >
             Login
           </button>
-          <p className="text-sm ml-2 hover:text-blue-500 cursor-pointer" onClick={() => handleReg(true)}>
+          <p className="text-sm ml-2 hover:text-blue-500 cursor-pointer" onClick={() => console.log(username)}>
             Need to register?
           </p>
         </form>
