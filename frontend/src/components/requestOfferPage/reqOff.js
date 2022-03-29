@@ -45,6 +45,7 @@ export const ReqOff = ({ offer, edit }) => {
     }
   }
   const [localEdit, setLocalEdit] = useState(edit);
+  const [postUser, setPostUser] = useState("");
   const [postal, setPostal] = useState("");
   const [postalError, setPostalError] = useState("");
   const [ppeDescError, setppeDescError] = useState(false);
@@ -96,7 +97,7 @@ export const ReqOff = ({ offer, edit }) => {
           })
           .then((response) => {
             console.log(response.data);
-            setLocalEdit(false);
+            // setLocalEdit(false);
             navigate(`/request/${response.data._id}`)
           })
           .catch((e) => {
@@ -111,7 +112,7 @@ export const ReqOff = ({ offer, edit }) => {
           })
           .then((response) => {
             console.log(response.data);
-            setLocalEdit(false);
+            // setLocalEdit(false);
             navigate(`/request/${response.data._id}`)
           })
           .catch((e) => {
@@ -123,12 +124,14 @@ export const ReqOff = ({ offer, edit }) => {
 
   useEffect(() => {
     if (!edit) {
+      setLocalEdit(false)
       console.log(params.id);
       if (offer) {
         axios
           .get(POST_URL + `/offers/${params.id}`)
           .then((response) => {
             console.log(response.data);
+            setPostUser(response.data.userId);
             setPPE(response.data.ppeProfiles);
             setPostal(response.data.postalCode);
           })
@@ -140,6 +143,7 @@ export const ReqOff = ({ offer, edit }) => {
           .get(POST_URL + `/requests/${params.id}`)
           .then((response) => {
             console.log(response.data);
+            setPostUser(response.data.userId);
             setPPE(response.data.ppeProfiles);
             setPostal(response.data.postalCode);
           })
@@ -147,8 +151,14 @@ export const ReqOff = ({ offer, edit }) => {
             console.log(e.response);
           });
       }
+    } else {
+      // cleans out state on window change
+      setLocalEdit(true);
+      setPostal("");
+      setPPE([]);
+      setPostUser("");
     }
-  }, []);
+  }, [edit]);
 
   return (
     <div>
@@ -184,7 +194,7 @@ export const ReqOff = ({ offer, edit }) => {
                 postalError={postalError}
               />
               <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-                {!edit && (
+                {!edit && postUser === userData.username && (
                   <a
                     type="submit"
                     onClick={() => deleteInDB()}
@@ -209,7 +219,7 @@ export const ReqOff = ({ offer, edit }) => {
                   >
                     Submit
                   </button>
-                ) : (
+                ) : (postUser === userData.username && (
                   <a
                     type="submit"
                     onClick={() => setLocalEdit(!localEdit)}
@@ -217,7 +227,7 @@ export const ReqOff = ({ offer, edit }) => {
                   >
                     Edit
                   </a>
-                )}
+                ))}
               </div>
             </div>
           </form>

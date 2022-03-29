@@ -35,12 +35,12 @@ export const Dashboard = () => {
   return (
     <div>
       <div className="p-6">
-      <h1 className="text-3xl p-4 font-semibold">Offers</h1>
-      <PPEOffers offers={offers}/>
+        <h1 className="text-3xl p-4 font-semibold">Offers</h1>
+        <PPEOffers offers={offers} />
       </div>
       <div className="p-6 pt-0">
-      <h1 className="text-3xl p-4 font-semibold">Requests</h1>
-      <PPERequests requests={requests}/>
+        <h1 className="text-3xl p-4 font-semibold">Requests</h1>
+        <PPERequests requests={requests} />
       </div>
     </div>
   );

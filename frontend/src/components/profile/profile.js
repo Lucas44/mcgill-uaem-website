@@ -49,46 +49,49 @@ export const Profile = () => {
   return (
     <div className="w-full">
       <div className="flex items-center justify-center pt-28">
-          <div className="shadow-4xl bg-white font-semibold text-center rounded-3xl border shadow-lg p-8 pt-16 relative">
-            <div className="flex justify-center">
-              <div className="shadow-lg rounded-full bg-gradient-to-tr from-[#FFDB10] to-[#FF8510] mx-auto absolute -top-20 w-32 h-32 border-4 border-white flex items-center justify-center">
-                <h1 className="-mt-2 text-6xl text-white">
-                  {userName.charAt(0)}
-                </h1>
-              </div>
+        <div className="shadow-4xl bg-white font-semibold text-center rounded-3xl border shadow-lg p-8 pt-16 relative">
+          <div className="flex justify-center">
+            <div className="shadow-lg rounded-full bg-gradient-to-tr from-[#FFDB10] to-[#FF8510] mx-auto absolute -top-20 w-32 h-32 border-4 border-white flex items-center justify-center">
+              <h1 className="-mt-2 text-6xl text-white">
+                {userName.charAt(0)}
+              </h1>
             </div>
-            <h1 className="text-2xl text-gray-700">
-              Welcome back, {userName}.
-            </h1>
-            <h3 className="text-lg text-gray-500 ">{userOrg}</h3>
-            <button className="py-2 px-4 rounded-full bg-purple-700 hover:bg-purple-500 text-md text-white m-2" onClick={Userfront.logout}>Logout</button>
-            <p
-              className="text-sm text-gray-400 mt-2 hover:text-blue-500 cursor-pointer"
-              onClick={() => setChange(!showChange)}
-            >
-              {profileChangeString}
-            </p>
-            {showChange && (
-              <ChangeProfile
-                name={userName}
-                setName={setUserName}
-                org={userOrg}
-                setOrg={setUserOrg}
-                email={email}
-              />
-            )}
+          </div>
+          <h1 className="text-2xl text-gray-700">Welcome back, {userName}.</h1>
+          <h3 className="text-lg text-gray-500 ">{userOrg}</h3>
+          <button
+            className="py-2 px-4 rounded-full bg-purple-700 hover:bg-purple-500 text-md text-white m-2"
+            onClick={Userfront.logout}
+          >
+            Logout
+          </button>
+          <p
+            className="text-sm text-gray-400 mt-2 hover:text-blue-500 cursor-pointer"
+            onClick={() => setChange(!showChange)}
+          >
+            {profileChangeString}
+          </p>
+          {showChange && (
+            <ChangeProfile
+              name={userName}
+              setName={setUserName}
+              org={userOrg}
+              setOrg={setUserOrg}
+              email={email}
+            />
+          )}
         </div>
       </div>
       <div>
-      <div className="p-6">
-      <h1 className="text-3xl p-4 font-semibold">Offers</h1>
-      <PPEOffers offers={offers}/>
+        <div className="p-6">
+          <h1 className="text-3xl p-4 font-semibold">Offers</h1>
+          <PPEOffers offers={offers} />
+        </div>
+        <div className="p-6 pt-0">
+          <h1 className="text-3xl p-4 font-semibold">Requests</h1>
+          <PPERequests requests={requests} />
+        </div>
       </div>
-      <div className="p-6 pt-0">
-      <h1 className="text-3xl p-4 font-semibold">Requests</h1>
-      <PPERequests requests={requests}/>
-      </div>
-    </div>
     </div>
   );
 };
