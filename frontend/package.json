@@ -14,8 +14,8 @@
     "@userfront/react": "^0.2.22",
     "axios": "^0.26.1",
     "date-fns": "^2.28.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
     "use-places-autocomplete": "^3.0.0",
@@ -46,8 +46,5 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.0.12"
-  },
-  "resolutions": {
-    "@reach/combobox": "^0.17.0"
   }
 }
