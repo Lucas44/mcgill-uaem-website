@@ -10,6 +10,7 @@ export const Register = ({ handleReg }) => {
   const [password, setPassword] = useState("");
   const [org, setOrg] = useState("");
   const [passwordVerify, setPasswordVerify] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleName = (e) => {
     setAccountName(e.target.value);
@@ -30,6 +31,10 @@ export const Register = ({ handleReg }) => {
   const handleEmail = (e) => {
     setEmail(e.target.value);
   };
+
+  const handlePhoneNumber = (e) => {
+    setPhoneNumber(e.target.value);
+  }
 
   // Handle the form submission by calling Userfront.signup()
   const handleSubmit = (event) => {
@@ -107,6 +112,21 @@ export const Register = ({ handleReg }) => {
                 value={email}
                 onChange={handleEmail}
                 autoComplete="email"
+                required
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              />
+            </div>
+            <div>
+              <label className="ml-1 text-gray-700 font-bold text-sm" htmlFor="phone-number" 
+              >Phone Number
+              </label>
+              <input
+                id="phone-number"
+                name="phone-number"
+                type="phone-number"
+                value={phoneNumber}
+                onChange={handlePhoneNumber}
+                autoComplete="phone-number"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               />
