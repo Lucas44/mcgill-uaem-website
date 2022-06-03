@@ -29,12 +29,12 @@ export const Login = () => {
 
   return (
     <div className="min-h-full flex flex-grow items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="shadow sm:rounded-md p-8 max-w-md w-full space-y-8">
-        <div>
-        <h1 className="text-5xl font-bold block text-center">UAEM</h1>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+      <div className="h-80 shadow sm:rounded-md px-4 max-w-md w-full flex flex-col justify-center">
+        <div className="flex flex-col">
+        <h2 className="text-5xl font-bold block text-center">UAEM</h2>
+        <h2 className="text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
-          </h2>
+        </h2>
         </div>
         <form className="mt-8 space-y-3" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" defaultValue="true" />
