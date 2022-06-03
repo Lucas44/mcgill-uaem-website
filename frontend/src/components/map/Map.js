@@ -17,7 +17,7 @@ import {
   
   const mapContainerStyle = {
     width: "100vw",
-    height: "100vh",
+    height: "90vh",
   }
   const center = {
     lat: 45.504717,

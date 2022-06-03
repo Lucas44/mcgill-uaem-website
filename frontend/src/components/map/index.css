@@ -21,6 +21,13 @@ h1 {
     padding: 0;
 }
 
+#map * {
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: all 0s ease;
+    transition: none;
+  }
+
 .search {
     position: absolute;
     top: 1rem;
