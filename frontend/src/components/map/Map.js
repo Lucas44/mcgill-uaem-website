@@ -29,6 +29,7 @@ const options = {
   styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: true,
+  clickableIcons: false,
 }
 
 export default function Map() {
