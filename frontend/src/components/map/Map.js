@@ -38,8 +38,7 @@ export default function Map() {
     libraries,
   });
 
-  const [selectedOffer, setSelectedOffer] = useState(null);
-  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [selected, setSelected] = useState(null);
 
   const [offers, setOffers] = useState([]);
   const [requests, setRequests] = useState([]);
@@ -50,6 +49,7 @@ export default function Map() {
       lat: e.latLng.lat(),
       lng: e.latLng.lng(),
     });
+    setSelected(null);
   }, []);
 
   const mapRef = new useRef();
@@ -93,16 +93,20 @@ export default function Map() {
       />}
       {offers.map((offer) => (
         <Offer 
-          selected={selectedOffer}
-          setSelected={setSelectedOffer}
+          key={`${offer.lat}-${offer.lng}`}
+          selected={selected}
+          setSelected={setSelected}
           offer={offer}
+          setInfoBox={setInfoBox}
         />
       ))}
       {requests.map((request) => (
         <Request 
-          selected={selectedRequest}
-          setSelected={setSelectedRequest}
+          key={`${request.lat}-${request.lng}`}
+          selected={selected}
+          setSelected={setSelected}
           request={request}
+          setInfoBox={setInfoBox}
         />
       ))}
     </GoogleMap>

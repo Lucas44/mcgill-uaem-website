@@ -4,16 +4,16 @@ import {
 } from "@react-google-maps/api";
 import { formatRelative } from "date-fns";
 
-const Request = ({ selected, setSelected, request }) => {
+const Request = ({ selected, setSelected, request, setInfoBox }) => {
   return (
-  <Marker  
-      key={`${request.lat}-${request.lng}`}
+  <Marker
       position={{ lat: request.lat, lng: request.lng }}
       onClick={() => {
         setSelected(request);
+        setInfoBox(null);
       }}
       icon={{ 
-        url: '/red_triangle.png',
+        url: 'green_triangle.png',
         scaledSize: new window.google.maps.Size(30,30),
         origin: new window.google.maps.Point(0,0),
         anchor: new window.google.maps.Point(15,15),
