@@ -3,6 +3,7 @@ import {
   useLoadScript,
 } from "@react-google-maps/api";
 
+import { formatRelative } from "date-fns";
 import mapStyles from "./MapStyles";
 import "./index.css";
 import { useState, useCallback, useRef } from 'react';
@@ -33,8 +34,12 @@ const options = {
 
 export default function Map() {
 
+  let LAT;
+  let LNG;
+  
+  const KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
   const {isLoaded, loadError} = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: KEY,
     libraries,
   });
 
@@ -44,13 +49,63 @@ export default function Map() {
   const [requests, setRequests] = useState([]);
   const [infoBox, setInfoBox] = useState(null);
 
-  const onMapClick = useCallback((e) => {
-    setInfoBox({
-      lat: e.latLng.lat(),
-      lng: e.latLng.lng(),
-    });
-    setSelected(null);
-  }, []);
+  // const onMapClick = useCallback((e) => {
+  //   setInfoBox({
+  //     lat: e.latLng.lat(),
+  //     lng: e.latLng.lng(),
+  //   });
+  //   setSelected(null);
+  // }, []);
+
+  const onMapClick = (e) => {
+
+    const lat = e.latLng.lat()
+    const lng = e.latLng.lng()
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${KEY}`
+    // let postalCode = null
+
+    // Step 1: reverse geolocate to obtain postal code of the click
+    fetch(url)
+      .then(data => data.json()
+        .then(res => {
+          // console.log(res)
+          const address = res.results[0].address_components;
+          let postalCode = null;
+
+          address.forEach(part => {
+            if (part.types.includes("postal_code")) {
+              postalCode = part.long_name;
+            }
+          });
+
+          if (postalCode) {
+            // Step 2: geolocate on given postal code to find common latitude and longitude for all posts in area
+            const secondUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${postalCode}&key=${KEY}`
+            fetch(secondUrl)
+              .then(response => response.json())
+                .then(data => {
+
+                  return {
+                    lat: data.results[0].geometry.location.lat,
+                    lng: data.results[0].geometry.location.lng,
+                  }
+                }) 
+          }
+          else {
+            return {
+              lat: e.latLng.lat(),
+              lng: e.latLng.lng()
+            }
+          }
+        }));
+
+        setInfoBox({
+          lat: e.latLng.lat(),
+          lng: e.latLng.lng(),
+        });
+        setSelected(null);
+  }
+
 
   const mapRef = new useRef();
   const onMapLoad = useCallback((map) => {
@@ -59,7 +114,7 @@ export default function Map() {
 
   const panTo = useCallback(({lat, lng}) => {
       mapRef.current.panTo({ lat, lng });
-      mapRef.current.setZoom(14);
+      mapRef.current.setZoom(16);
     }, []);
 
   if (loadError) return "Error loading maps";
@@ -84,31 +139,31 @@ export default function Map() {
       onLoad={onMapLoad}
     >
       {infoBox && 
-      <InfoBox 
-        lat={infoBox.lat} 
-        lng={infoBox.lng} 
-        setInfoBox={setInfoBox} 
-        setOffers={setOffers}
-        setRequests={setRequests}
-      />}
-      {offers.map((offer) => (
-        <Offer 
-          key={`${offer.lat}-${offer.lng}`}
-          selected={selected}
-          setSelected={setSelected}
-          offer={offer}
-          setInfoBox={setInfoBox}
-        />
-      ))}
-      {requests.map((request) => (
-        <Request 
-          key={`${request.lat}-${request.lng}`}
-          selected={selected}
-          setSelected={setSelected}
-          request={request}
-          setInfoBox={setInfoBox}
-        />
-      ))}
+        <InfoBox 
+          lat={infoBox.lat} 
+          lng={infoBox.lng} 
+          setInfoBox={setInfoBox} 
+          setOffers={setOffers}
+          setRequests={setRequests}
+        />}
+        {offers.map((offer) => (
+          <Offer 
+            key={`${offer.lat}-${offer.lng}`}
+            selected={selected}
+            setSelected={setSelected}
+            offer={offer}
+            setInfoBox={setInfoBox}
+          />
+        ))}
+        {requests.map((request) => (
+          <Request 
+            key={`${request.lat}-${request.lng}`}
+            selected={selected}
+            setSelected={setSelected}
+            request={request}
+            setInfoBox={setInfoBox}
+          />
+        ))}
     </GoogleMap>
   </div>
   );

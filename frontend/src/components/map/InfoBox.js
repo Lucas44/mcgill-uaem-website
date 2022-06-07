@@ -25,7 +25,6 @@ const InfoBox = ({ lat, lng, setInfoBox, setOffers, setRequests }) => {
             lng: lng,
             time: new Date(),
         }
-        // console.log(newRequest)
         setRequests((currentRequests) => [
             ...currentRequests,
             newRequest,

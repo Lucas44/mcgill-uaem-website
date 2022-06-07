@@ -4,9 +4,9 @@ import {
 } from "@react-google-maps/api";
 import { formatRelative } from "date-fns";
 
-const Request = ({ selected, setSelected, request, setInfoBox }) => {
+const Request = ({ selected, setSelected, request, setInfoBox, clusterer }) => {
   return (
-  <Marker
+    <Marker
       position={{ lat: request.lat, lng: request.lng }}
       onClick={() => {
         setSelected(request);
@@ -18,14 +18,15 @@ const Request = ({ selected, setSelected, request, setInfoBox }) => {
         origin: new window.google.maps.Point(0,0),
         anchor: new window.google.maps.Point(15,15),
       }}
-  >
+      clusterer={clusterer}
+    >
     {selected === request && 
     (<InfoWindow
       position={{ lat: selected.lat, lng: selected.lng }}
       onCloseClick={() => { 
         setSelected(null);
         }}
-    >
+      >
       <div>
         <h2>Request</h2>
         <p>Spotted {formatRelative(selected.time, new Date())}</p>

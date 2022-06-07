@@ -4,7 +4,7 @@ import {
   } from "@react-google-maps/api";
   import { formatRelative } from "date-fns";
   
-  const Offer = ({ selected, setSelected, offer, setInfoBox }) => {
+  const Offer = ({ selected, setSelected, offer, setInfoBox, clusterer }) => {
     return (
       <Marker  
         position={{ lat: offer.lat, lng: offer.lng }}
@@ -18,6 +18,7 @@ import {
             origin: new window.google.maps.Point(0,0),
             anchor: new window.google.maps.Point(15,15),
         }}
+        clusterer={clusterer}
       >
         {selected === offer && 
         (<InfoWindow
