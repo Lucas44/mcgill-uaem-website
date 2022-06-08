@@ -62,48 +62,55 @@ export default function Map() {
     const lat = e.latLng.lat()
     const lng = e.latLng.lng()
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${KEY}`
-    // let postalCode = null
+    let postalCode = null;
 
     // Step 1: reverse geolocate to obtain postal code of the click
-    fetch(url)
+    const fetchPostalCode = fetch(url)
       .then(data => data.json()
         .then(res => {
-          // console.log(res)
+
           const address = res.results[0].address_components;
-          let postalCode = null;
 
           address.forEach(part => {
             if (part.types.includes("postal_code")) {
               postalCode = part.long_name;
             }
           });
+          
+          // Step 2: geolocate on given postal code to find common latitude and longitude for all posts in area
+          const secondUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${postalCode}&key=${KEY}`
+          const fetchCoordinates = fetch(secondUrl)
+            .then(response => response.json())
+              .then(data => {
+                return {
+                  lat: data.results[0].geometry.location.lat,
+                  lng: data.results[0].geometry.location.lng,
+                }
+              })
+          // Here, we need to await the response of the nested promise before returning any value for the outer promise
+          const coordinates =  fetchCoordinates.then(value => {
+            return value
+          })
+          return coordinates
+        })
+      );
 
-          if (postalCode) {
-            // Step 2: geolocate on given postal code to find common latitude and longitude for all posts in area
-            const secondUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${postalCode}&key=${KEY}`
-            fetch(secondUrl)
-              .then(response => response.json())
-                .then(data => {
+    LAT = fetchPostalCode.then(value => {
+      return value.lat;
+    })
 
-                  return {
-                    lat: data.results[0].geometry.location.lat,
-                    lng: data.results[0].geometry.location.lng,
-                  }
-                }) 
-          }
-          else {
-            return {
-              lat: e.latLng.lat(),
-              lng: e.latLng.lng()
-            }
-          }
-        }));
+    LNG = fetchPostalCode.then(value => {
+      return value.lng;
+    })
+    console.log(LAT)
+    console.log(LNG)
 
-        setInfoBox({
-          lat: e.latLng.lat(),
-          lng: e.latLng.lng(),
-        });
-        setSelected(null);
+    setInfoBox({
+      lat: e.latLng.lat(),
+      lng: e.latLng.lng(),
+    });
+    setSelected(null);
+
   }
 
 
@@ -137,6 +144,8 @@ export default function Map() {
       options={options}
       onClick={onMapClick}
       onLoad={onMapLoad}
+      LAT={LAT}
+      LNG={LNG}
     >
       {infoBox && 
         <InfoBox 
